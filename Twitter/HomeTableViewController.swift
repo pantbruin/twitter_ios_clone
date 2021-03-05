@@ -14,6 +14,9 @@ class HomeTableViewController: UITableViewController {
     var tweetArray = [NSDictionary]()
     // Save the # of tweets in a variable
     var numberofTweets: Int!
+    
+    // Sets up the variable needed for pull to refresh functionality
+    let myRefreshControl = UIRefreshControl()
 
     @IBAction func onLogout(_ sender: Any) {
         TwitterAPICaller.client?.logout()
@@ -23,14 +26,44 @@ class HomeTableViewController: UITableViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func loadTweet(){
+    @objc func loadTweets(){
+        
+        numberofTweets = 10
+        
         
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count": 10]
+        let myParams = ["count": numberofTweets]
         
         
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
             
+            // We have to clear the tweetArray so that we start fresh from the last api call
+            self.tweetArray.removeAll()
+            for tweet in tweets{
+                self.tweetArray.append(tweet)
+            }
+            
+        self.tableView.reloadData()
+        // Once we're done updating the table, we want to stop the refreshing icon at the top of the tablelist
+        self.myRefreshControl.endRefreshing()
+            
+        }, failure: { (Error) in
+            print("could not retreive tweets")
+        })
+    }
+    
+    func loadMoreTweets(){
+        
+        let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+        
+        // Add an additional 20 tweets to whatever numberOfTweets was before
+        numberofTweets = numberofTweets + 10
+        let myParams = ["count": numberofTweets]
+        
+        // The api call below is the exact same api call in loadTweets(), but with endRefreshing removed because we dont need to have that when scrolling down
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
+            
+            // We have to clear the tweetArray so that we start fresh from the last api call
             self.tweetArray.removeAll()
             for tweet in tweets{
                 self.tweetArray.append(tweet)
@@ -41,13 +74,25 @@ class HomeTableViewController: UITableViewController {
         }, failure: { (Error) in
             print("could not retreive tweets")
         })
+        
+    }
+    
+    // This is executed when the user gets to the end of the page. It runs loadMoreTweets
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
+        if indexPath.row + 1 == tweetArray.count{
+            loadMoreTweets()
+        }
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Run our API call
-        loadTweet()
+        loadTweets()
+        
+        // myRefreshControl runs loadTweet again
+        myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
+        tableView.refreshControl = myRefreshControl
         
 
     }
