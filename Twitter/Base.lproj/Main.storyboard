@@ -48,12 +48,12 @@
             </objects>
             <point key="canvasLocation" x="176.80000000000001" y="110.19490254872565"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Home-->
         <scene sceneID="ixd-Fv-HOk">
             <objects>
-                <tableViewController id="k0I-bA-GZq" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="fullScreen" id="k0I-bA-GZq" customClass="HomeTableViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qg0-jm-Oke">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -71,7 +71,14 @@
                             <outlet property="delegate" destination="k0I-bA-GZq" id="bWv-kC-Ng6"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="W8W-EF-m0O"/>
+                    <navigationItem key="navigationItem" title="Home" id="W8W-EF-m0O">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="lVS-jW-4lp">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="onLogout:" destination="k0I-bA-GZq" id="wjw-9V-g5d"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hyR-4G-qF3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -80,10 +87,14 @@
         <!--Navigation Controller-->
         <scene sceneID="Pbw-QA-3Qb">
             <objects>
-                <navigationController id="BsU-ex-5U5" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="fullScreen" id="BsU-ex-5U5" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xtb-Oe-qep">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.076873822719999998" green="0.69760125750000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="k0I-bA-GZq" kind="relationship" relationship="rootViewController" id="34s-Lf-WnB"/>
