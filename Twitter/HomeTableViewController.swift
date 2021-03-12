@@ -84,17 +84,21 @@ class HomeTableViewController: UITableViewController {
         }
     }
     
-    
+    // Only gets called once, upon initial screen load
     override func viewDidLoad() {
         super.viewDidLoad()
         // Run our API call
-        loadTweets()
+//        loadTweets()
         
         // myRefreshControl runs loadTweet again
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         tableView.refreshControl = myRefreshControl
-        
-
+    }
+    
+    // Always gets called when the view appears again, like navigating back to the screen
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadTweets()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
