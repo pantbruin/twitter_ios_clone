@@ -1,5 +1,5 @@
 
-# Twitter - Part II
+# Twitter Clone App - iOS
 
 A twitter clone where one can view, compose, favorite, and retweet tweets using the Twitter API.
 
